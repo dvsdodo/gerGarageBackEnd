@@ -19,6 +19,11 @@ const User = db.define("users", {
     username: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true
+    },
+    phone_number: {
+        type: Sequelize.STRING,
+        allowNull: false,
     },
     is_admin: {
         type: Sequelize.STRING,
