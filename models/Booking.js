@@ -27,6 +27,10 @@ const Booking = db.define("bookings", {
     id_booking_service: {
         type: Sequelize.INTEGER,
         allowNull: false,
+    },
+    id_slots: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
     }
 });
 

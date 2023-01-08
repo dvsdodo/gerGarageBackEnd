@@ -17,6 +17,7 @@ const Status = require("./models/Status");
 const Staff = require("./models/Staffs");
 const BookingService = require("./models/BookingService");
 const Booking = require("./models/Booking");
+const Slots = require("./models/Slots");
 
 app.use(cors());
 app.use(express.json());
@@ -185,6 +186,21 @@ app.get("/listVehicle", eAdmin, async (req, res) => {
     });
 });
 
+app.get("/listSlots", eAdmin, async (req, res) => {
+
+    await Slots.findAll().then((result) => {
+        return res.json({
+            erro: false,
+            result
+        })
+    }).catch(() => {
+        return res.status(400).json({
+            erro: true,
+            mensagem: "Error: No Slots found"
+        });
+    });
+});
+
 /*app.post("/createUser", async (req, res) => {
 
     await User.create({
@@ -248,6 +264,7 @@ app.post("/createBooking", async (req, res) => {
         id_vehicle: data.id_vehicle,
         date: data.date,
         id_booking_service: data.id_booking_service,
+        id_slots: data.id_slots,
         id_status: data.id_status === 1
     })
     .then(() =>{
