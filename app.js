@@ -81,6 +81,23 @@ app.get("/listUsers", eAdmin, async (req, res) => {
     });
 });
 
+app.get("/listTest", eAdmin, async (req, res) => {
+
+    await Booking.findAll({ 
+        include: [{model: Staff}]
+    }).then((result) => {
+        return res.json({
+            erro: false,
+            result
+        })
+    }).catch(() => {
+        return res.status(400).json({
+            erro: true,
+            mensagem: "Error: No Test found"
+        });
+    });
+});
+
 app.get("/listType", eAdmin, async (req, res) => {
 
     await Type.findAll().then((result) => {
@@ -141,7 +158,7 @@ app.get("/listStatus", eAdmin, async (req, res) => {
     });
 });
 
-app.get("/listStaff", eAdmin, async (req, res) => {
+app.get("/listStaff", async (req, res) => {
 
     await Staff.findAll().then((result) => {
         return res.json({
@@ -152,6 +169,21 @@ app.get("/listStaff", eAdmin, async (req, res) => {
         return res.status(400).json({
             erro: true,
             mensagem: "Error: No Staff found"
+        });
+    });
+});
+
+app.get("/listBooking", async (req, res) => {
+
+    await Booking.findAll().then((result) => {
+        return res.json({
+            erro: false,
+            result
+        })
+    }).catch(() => {
+        return res.status(400).json({
+            erro: true,
+            mensagem: "Error: No Booking found"
         });
     });
 });
@@ -200,17 +232,6 @@ app.get("/listSlots", eAdmin, async (req, res) => {
         });
     });
 });
-
-/*app.post("/createUser", async (req, res) => {
-
-    await User.create({
-        name: req.body.name,
-        password: req.body.password,
-        username: req.body.username,
-        phone_number: req.body.phone_number,
-        is_admin: req.body.is_admin === 0
-    }).then((result) => res.json(result));
-});*/
 
 app.post("/createUser", async (req, res) => {
     //console.log(req.body);
@@ -277,6 +298,28 @@ app.post("/createBooking", async (req, res) => {
         });
     });
 });
+
+app.put("/createBooking/:id", async (req, res) => {
+    const { id_staff } = req.body;
+    const id = parseInt(req.params.id)
+    //console.log(id_staff);
+    console.log(typeof req.params.id);
+
+    await Booking.update(
+        { id_staff },
+        {
+            where: { id_booking : id},
+        }
+    ).then(() =>{
+        return res.json(id_staff);
+    }).catch(() => {
+        return res.status(400).json({
+            erro: true,
+            mensagem: "Error: Fail to Book",
+            body: req.body.id_staff
+        });
+    });
+})
 
 app.listen(5000, () => {
     console.log("service started on port 5000");

@@ -1,5 +1,8 @@
 const Sequelize = require("sequelize");
 const db = require("./db");
+const Staff = require("./Staffs");
+const Status = require("./Status");
+const Vehicle = require("./Vehicle");
 
 const Booking = db.define("bookings", {
     id_booking: {
@@ -33,5 +36,9 @@ const Booking = db.define("bookings", {
         allowNull: false,
     }
 });
+
+Booking.hasOne(Vehicle, { foreignKey: "id_vehicle"});
+Booking.hasOne(Status, { foreignKey: "id_status"});
+Booking.hasOne(Staff, { foreignKey: "id_staff"});
 
 module.exports = Booking;
